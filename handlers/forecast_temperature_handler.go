@@ -6,10 +6,12 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/hippo-an/hivebox/config"
 )
 
 func getForcastTemperature() (*TemperatureSummaryResponse, error) {
-	serviceKey := ""
+	serviceKey := config.AppSecret.ForecastServiceKey
 	nextSixTime, err := getNextSixTime()
 
 	if err != nil {
