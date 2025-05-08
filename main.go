@@ -4,19 +4,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/hippo-an/hivebox/handlers"
 )
 
 const (
-	appVersion = "v0.0.1"
-	port       = 8888
+	port = 8888
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(appVersion))
-	})
+	http.HandleFunc("GET /version", handlers.GetVersion)
+	http.HandleFunc("GET /forecast/temperature", handlers.GetForecastTemperatureHandler)
 
-	log.Printf("application server running on port %d\n", port)
-
+	log.Printf("hivebox server running on port %d\n", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 }
