@@ -10,5 +10,5 @@ import (
 func GetVersion(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(VersionResponse{Version: config.AppConfig.Application.Version})
+	json.NewEncoder(w).Encode(VersionResponse{Version: config.Config.Server.Version})
 }

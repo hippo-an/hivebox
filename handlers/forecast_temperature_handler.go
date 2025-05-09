@@ -11,14 +11,15 @@ import (
 )
 
 func getForcastTemperature() (*TemperatureSummaryResponse, error) {
-	serviceKey := config.AppSecret.ForecastServiceKey
+	serviceKey := config.Config.ForecastServiceKey
 	nextSixTime, err := getNextSixTime()
 
 	if err != nil {
 		return nil, fmt.Errorf("invalid next six time: %w", err)
 	}
 
-	resp, err := http.Get(fmt.Sprintf("http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=%s&pageNo=1&numOfRows=10&dataType=JSON&regId=11B10101&tmFc=%s", serviceKey, nextSixTime))
+	url := fmt.Sprintf("http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=%s&pageNo=1&numOfRows=10&dataType=JSON&regId=11B10101&tmFc=%s", serviceKey, nextSixTime)
+	resp, err := http.Get(url)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch forecast temperature: %v", err)
@@ -67,7 +68,7 @@ func getNextSixTime() (string, error) {
 	evening := time.Date(now.Year(), now.Month(), now.Day(), 18, 0, 0, 0, loc)
 
 	if now.After(morning) && now.Before(evening) {
-		return evening.Format("200601021504"), nil
+		return morning.Format("200601021504"), nil
 	}
 
 	if now.Before(morning) {
